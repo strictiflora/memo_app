@@ -17,7 +17,7 @@ If you use Ruby 3.0.0 or later, you need to uncomment a line: `# gem 'webrick'` 
 gem 'webrick'
 ```
 
-Run `bundle install`
+Run `bundle install`.
 ```
 % bundle install
 ```
