@@ -23,7 +23,7 @@ Run `bundle install`
 ```
 
 # Quickstart
-Just run `ruby memo_app.rb` and access `http://localhost:4567`.
+Just run `bundle exec ruby memo_app.rb` and access `http://localhost:4567`.
 ```
-% ruby memo_app.rb
+% bundle exec ruby memo_app.rb
 ```
