@@ -2,6 +2,6 @@
 <button type=“button” onclick="location.href='/new'" class="post-btn">追加</button>
 <ul>
   <% @memos.each do |memo| %>
-    <li><a href=<%= "/#{memo['id']}" %>><%= memo['title'] %></a></li>
+    <li><a href=<%= "/#{memo['id']}" %>><%= h(memo['title']) %></a></li>
   <% end %>
 </ul>
