@@ -7,7 +7,7 @@ class Memo
   include Enumerable
 
   def self.load
-    connection = PG.connect( dbname: 'postgres' )
+    connection = PG.connect(dbname: 'postgres')
     memos = connection.exec('SELECT * FROM memos').each.to_a
     Memo.new(connection, memos)
   end
