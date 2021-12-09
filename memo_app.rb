@@ -2,7 +2,6 @@
 
 require 'sinatra'
 require 'sinatra/reloader'
-require 'json'
 require_relative 'memo_class'
 
 before do
@@ -37,17 +36,13 @@ end
 get '/memos/:id' do
   id = params[:id].to_i
   @memo = @memos.find_memo_by_id(id)
-  if @memo
-    erb :detail
-  else
-    status 404
-  end
+  select_template_or_404(@memo, :detail)
 end
 
 get '/memos/:id/edit' do
   id = params[:id].to_i
   @memo = @memos.find_memo_by_id(id)
-  erb :edit
+  select_template_or_404(@memo, :edit)
 end
 
 patch '/memos/:id/edit' do
@@ -65,4 +60,12 @@ end
 
 not_found do
   erb :notfound, layout: :layout2
+end
+
+def select_template_or_404(memo, template)
+  if memo
+    erb template
+  else
+    status 404
+  end
 end
