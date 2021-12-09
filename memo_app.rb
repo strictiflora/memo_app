@@ -23,7 +23,7 @@ get '/memos' do
   erb :index
 end
 
-get '/new' do
+get '/memos/new' do
   erb :new
 end
 
@@ -34,7 +34,7 @@ post '/memos' do
   redirect to('/memos')
 end
 
-get '/:id' do
+get '/memos/:id' do
   id = params[:id]
   @memo = @memos.find_memo_by_id(id)
   if @memos.any? { |memo| memo['id'] == id }
@@ -44,20 +44,20 @@ get '/:id' do
   end
 end
 
-get '/:id/edit' do
+get '/memos/:id/edit' do
   @memo = @memos.find_memo_by_id(params[:id])
   erb :edit
 end
 
-patch '/:id/edit' do
+patch '/memos/:id/edit' do
   title = params[:title]
   memo = params[:memo]
   id = params[:id]
   @memos.edit(id, title, memo)
-  redirect to("/#{id}")
+  redirect to("/memos/#{id}")
 end
 
-delete '/:id' do
+delete '/memos/:id' do
   @memos.delete(params[:id])
   redirect to('/memos')
 end
