@@ -36,13 +36,13 @@ end
 get '/memos/:id' do
   id = params[:id].to_i
   @memo = @memos.find_memo_by_id(id)
-  select_template_or_404(@memo, :detail)
+  select_template_or_404error(@memo, :detail)
 end
 
 get '/memos/:id/edit' do
   id = params[:id].to_i
   @memo = @memos.find_memo_by_id(id)
-  select_template_or_404(@memo, :edit)
+  select_template_or_404error(@memo, :edit)
 end
 
 patch '/memos/:id/edit' do
@@ -62,7 +62,7 @@ not_found do
   erb :notfound, layout: :layout2
 end
 
-def select_template_or_404(memo, template)
+def select_template_or_404error(memo, template)
   if memo
     erb template
   else
