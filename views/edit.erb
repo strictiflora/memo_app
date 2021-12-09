@@ -1,6 +1,6 @@
-<form action="/<%= @id %>/edit" method="post" class="memo-form">
+<form action="/<%= @memo['id'] %>/edit" method="post" class="memo-form">
   <input type="hidden" name="_method" value="PATCH">
-  <input type="text" name="title" value=<%= @memo['title'] %> class="memo-title">
+  <input type="text" name="title" value=<%= h(@memo['title']) %> class="memo-title">
   <p></p>
   <textarea type="text" name="memo"><%= @memo['memo'] %></textarea>
   <p></p>

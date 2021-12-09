@@ -5,8 +5,8 @@
   <% end %>
 </ul>
 <div class="detail-btn">
-  <button type=“button” onclick="location.href='/<%= @id %>/edit'">変更</button>
-  <form action="/<%= @id %>" method="post" class="delete-btn">
+  <button type=“button” onclick="location.href='/<%= @memo['id'] %>/edit'">変更</button>
+  <form action="/<%= @memo['id'] %>" method="post" class="delete-btn">
     <input type="hidden" name="_method" value="DELETE">
     <button type="submit">削除</button>
   </form>

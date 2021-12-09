@@ -4,8 +4,8 @@
 class Memo
   include Enumerable
 
-  def self.find(filename)
-    data = File.open(filename) { |f| JSON.parse(File.open(f).read) }
+  def self.load(filename)
+    data = File.open(filename) { |f| JSON.parse(f.read) }
     Memo.new(data['memos'], filename)
   end
 
@@ -18,7 +18,7 @@ class Memo
     @memos.each(&block)
   end
 
-  def dump_in_file(memos)
+  def save(memos)
     data = { 'memos' => memos }
     File.open(@filename, 'w') { |f| JSON.dump(data, f) }
   end
@@ -31,10 +31,10 @@ class Memo
       @memos << { 'id' => (id + 1).to_s, 'title' => title, 'memo' => memo }
     end
 
-    dump_in_file(@memos)
+    save(@memos)
   end
 
-  def show_detail(id)
+  def find_memo_by_id(id)
     @memos.find { |memo| memo['id'] == id }
   end
 
@@ -47,11 +47,11 @@ class Memo
       end
     end
 
-    dump_in_file(new_memos)
+    save(new_memos)
   end
 
   def delete(id)
     @memos.delete_if { |memo| memo['id'] == id }
-    dump_in_file(@memos)
+    save(@memos)
   end
 end

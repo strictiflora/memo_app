@@ -6,7 +6,7 @@ require 'json'
 require_relative 'memo_class'
 
 before do
-  @memos = Memo.find('memos.json')
+  @memos = Memo.load('memos.json')
 end
 
 helpers do
@@ -16,6 +16,10 @@ helpers do
 end
 
 get '/' do
+  redirect to('/memos')
+end
+
+get '/memos' do
   erb :index
 end
 
@@ -23,17 +27,17 @@ get '/new' do
   erb :new
 end
 
-post '/' do
+post '/memos' do
   title = params[:title]
   memo = params[:memo]
   @memos.generate(title, memo)
-  redirect to('/')
+  redirect to('/memos')
 end
 
 get '/:id' do
-  @id = params[:id]
-  @memo = @memos.show_detail(@id)
-  if @memos.any? { |memo| memo['id'] == @id }
+  id = params[:id]
+  @memo = @memos.find_memo_by_id(id)
+  if @memos.any? { |memo| memo['id'] == id }
     erb :detail
   else
     status 404
@@ -41,23 +45,21 @@ get '/:id' do
 end
 
 get '/:id/edit' do
-  @id = params[:id]
-  @memo = @memos.show_detail(@id)
+  @memo = @memos.find_memo_by_id(params[:id])
   erb :edit
 end
 
 patch '/:id/edit' do
   title = params[:title]
   memo = params[:memo]
-  @id = params[:id]
-  @memos.edit(@id, title, memo)
-  redirect to("/#{@id}")
+  id = params[:id]
+  @memos.edit(id, title, memo)
+  redirect to("/#{id}")
 end
 
 delete '/:id' do
-  @id = params[:id]
-  @memos.delete(@id)
-  redirect to('/')
+  @memos.delete(params[:id])
+  redirect to('/memos')
 end
 
 not_found do
