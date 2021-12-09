@@ -23,6 +23,11 @@ Run `bundle install`.
 ```
 
 # Quickstart
+Run the command below to create a table in PostgreSQL.(A database named 'postgres' is needed.)
+```
+% psql -d postgres -f create_table.sql
+```
+
 Just run `bundle exec ruby memo_app.rb` and access `http://localhost:4567`.
 ```
 % bundle exec ruby memo_app.rb

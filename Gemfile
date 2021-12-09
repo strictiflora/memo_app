@@ -9,3 +9,5 @@ gem 'sinatra-contrib'
 
 # ruby 3.0.0 以降を使う場合は以下をアンコメントする
 # gem 'webrick'
+
+gem 'pg'

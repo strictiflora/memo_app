@@ -1,57 +1,40 @@
 # frozen_string_literal: true
 
-# JSONファイルにデータを読み書きする
+require 'pg'
+
+# dbにデータを読み書きする
 class Memo
   include Enumerable
 
-  def self.load(filename)
-    data = File.open(filename) { |f| JSON.parse(f.read) }
-    Memo.new(data['memos'], filename)
+  def self.load
+    connection = PG.connect( dbname: 'postgres' )
+    memos = connection.exec('SELECT * FROM memos').each.to_a
+    Memo.new(connection, memos)
   end
 
-  def initialize(memos, filename)
+  def initialize(connection, memos)
+    @connection = connection
     @memos = memos
-    @filename = filename
   end
 
   def each(&block)
     @memos.each(&block)
   end
 
-  def save(memos)
-    data = { 'memos' => memos }
-    File.open(@filename, 'w') { |f| JSON.dump(data, f) }
-  end
-
-  def generate(title, memo)
-    if @memos.empty?
-      @memos << { 'id' => '1', 'title' => title, 'memo' => memo }
-    else
-      id = @memos[-1]['id'].to_i
-      @memos << { 'id' => (id + 1).to_s, 'title' => title, 'memo' => memo }
-    end
-
-    save(@memos)
+  def generate(title, content)
+    @connection.exec('INSERT INTO memos(title, content) VALUES($1, $2)', [title, content])
   end
 
   def find_memo_by_id(id)
-    @memos.find { |memo| memo['id'] == id }
+    memo = @connection.exec('SELECT id, title, content FROM memos WHERE id = $1', [id])
+    memo.first
   end
 
-  def edit(id, title, memo)
-    new_memos = @memos.map do |original_memo|
-      if original_memo['id'] == id
-        { 'id' => id, 'title' => title, 'memo' => memo }
-      else
-        original_memo
-      end
-    end
-
-    save(new_memos)
+  def edit(id, title, content)
+    @connection.exec('UPDATE memos SET title = $1, content = $2 WHERE id = $3', [title, content, id])
   end
 
   def delete(id)
-    @memos.delete_if { |memo| memo['id'] == id }
-    save(@memos)
+    @connection.exec('DELETE FROM memos WHERE id= $1', [id])
   end
 end

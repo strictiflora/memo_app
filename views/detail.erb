@@ -1,6 +1,6 @@
 <h1><%= h(@memo['title']) %></h1>
 <ul>
-  <% @memo['memo'].split("\r\n").each do |sentence| %>
+  <% @memo['content'].split("\r\n").each do |sentence| %>
     <li><%= h(sentence) %></li>
   <% end %>
 </ul>

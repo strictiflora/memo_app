@@ -6,7 +6,7 @@ require 'json'
 require_relative 'memo_class'
 
 before do
-  @memos = Memo.load('memos.json')
+  @memos = Memo.load
 end
 
 helpers do
@@ -29,15 +29,15 @@ end
 
 post '/memos' do
   title = params[:title]
-  memo = params[:memo]
-  @memos.generate(title, memo)
+  content = params[:content]
+  @memos.generate(title, content)
   redirect to('/memos')
 end
 
 get '/:id' do
-  id = params[:id]
+  id = params[:id].to_i
   @memo = @memos.find_memo_by_id(id)
-  if @memos.any? { |memo| memo['id'] == id }
+  if @memo
     erb :detail
   else
     status 404
@@ -45,15 +45,16 @@ get '/:id' do
 end
 
 get '/:id/edit' do
-  @memo = @memos.find_memo_by_id(params[:id])
+  id = params[:id].to_i
+  @memo = @memos.find_memo_by_id(id)
   erb :edit
 end
 
 patch '/:id/edit' do
   title = params[:title]
-  memo = params[:memo]
-  id = params[:id]
-  @memos.edit(id, title, memo)
+  content = params[:content]
+  id = params[:id].to_i
+  @memos.edit(id, title, content)
   redirect to("/#{id}")
 end
 
