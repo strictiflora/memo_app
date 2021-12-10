@@ -49,7 +49,7 @@ get '/memos/:id/edit' do
   erb :edit
 end
 
-patch '/memos/:id/edit' do
+patch '/memos/:id' do
   title = params[:title]
   memo = params[:memo]
   id = params[:id]
