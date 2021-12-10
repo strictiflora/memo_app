@@ -45,7 +45,7 @@ get '/memos/:id/edit' do
   select_template_or_404error(@memo, :edit)
 end
 
-patch '/memos/:id/edit' do
+patch '/memos/:id' do
   title = params[:title]
   content = params[:content]
   id = params[:id].to_i
