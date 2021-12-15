@@ -6,8 +6,10 @@ require 'pg'
 class Memo
   include Enumerable
 
+  @connection ||= PG.connect(dbname: 'postgres')
+
   def self.load
-    connection = PG.connect(dbname: 'postgres')
+    connection = Memo.instance_variable_get(:@connection)
     memos = connection.exec('SELECT * FROM memos').each.to_a
     Memo.new(connection, memos)
   end
